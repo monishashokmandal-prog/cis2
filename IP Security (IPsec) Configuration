@@ -1,0 +1,19 @@
+
+import hmac
+import hashlib
+
+key = b"ipsec_key"
+data = b"Secret data packet"
+
+def encrypt(data):
+    return bytes(b ^ key[i % len(key)] for i, b in enumerate(data))
+
+encrypted = encrypt(data)
+mac = hmac.new(key, encrypted, hashlib.sha256).hexdigest()
+decrypted = encrypt(encrypted)
+
+print("Original payload:", data)
+print("Encrypted (ESP-style):", encrypted)
+print("Integrity Check (MAC):", mac)
+print("Decrypted:", decrypted)
+print("Integrity OK:", hmac.new(key, encrypted, hashlib.sha256).hexdigest() == mac)
