@@ -1,0 +1,22 @@
+
+blocked = "203.0.113.66"
+trusted = "192.168.1.10"
+
+def firewall(ip, port):
+    if ip == blocked:
+        return "DENY"
+    if port in (80, 443):
+        return "ALLOW"
+    if ip == trusted and port == 22:
+        return "ALLOW"
+    return "DENY"
+
+packets = [
+    ("198.51.100.5", 80),
+    ("198.51.100.5", 22),
+    ("192.168.1.10", 22),
+    ("203.0.113.66", 443)
+]
+
+for ip, port in packets:
+    print(f"{ip}:{port} -> {firewall(ip, port)}")
