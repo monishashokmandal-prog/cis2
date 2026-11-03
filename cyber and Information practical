@@ -1,0 +1,23 @@
+
+def caesar(text, shift):
+    ans = ""
+    for ch in text:
+        if ch.isalpha():
+            base = 65 if ch.isupper() else 97
+            ans += chr((ord(ch)-base+shift)%26+base)
+        else:
+            ans += ch
+    return ans
+
+def transposition(text, key):
+    text = text.replace(" ", "")
+    rows = [text[i:i+len(key)] for i in range(0,len(text),len(key))]
+    return "".join(row[j] for j in sorted(range(len(key)),key=lambda x:key[x]) for row in rows if j<len(row))
+
+msg = "ATTACK AT DAWN"
+enc = caesar(msg, 3)
+
+print("Original:", msg)
+print("Caesar Encrypted:", enc)
+print("Caesar Decrypted:", caesar(enc, -3))
+print("Transposition Encrypted:", transposition(msg, "KEY"))
