@@ -1,0 +1,22 @@
+
+import hashlib
+
+p, q = 61, 53
+n = p * q
+e = 17
+d = pow(e, -1, (p-1)*(q-1))
+
+def hash_msg(msg):
+    return int(hashlib.sha256(msg.encode()).hexdigest(), 16) % n
+
+msg = "I agree to this contract"
+h = hash_msg(msg)
+
+signature = pow(h, d, n)
+
+print("Message:", msg)
+print("Signature:", signature)
+print("Valid signature:", pow(signature, e, n) == h)
+
+tampered = hash_msg("I disagree with this contract")
+print("Tampered message valid:", pow(signature, e, n) == tampered)
